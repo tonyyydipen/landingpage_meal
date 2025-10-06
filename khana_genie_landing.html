@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khana Genie - Your Personal Meal Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: #1D1A39;
+            color: white;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background with Parallax */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80') center/cover no-repeat fixed;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(29, 26, 57, 0.95) 0%, rgba(69, 25, 82, 0.90) 50%, rgba(102, 37, 73, 0.92) 100%);
+            z-index: 1;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .parallax-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #F39F5A, #AE445A);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #E8BCB9, #F39F5A);
+            top: 60%;
+            right: 15%;
+            animation-delay: -5s;
+        }
+
+        .shape3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #AE445A, #662549);
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(50px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
+        }
+
+        /* Scroll Animation Styles */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-animate.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-animate-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-animate-left.fade-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-animate-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-animate-right.fade-in {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-animate-scale {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease-out;
+        }
+
+        .scroll-animate-scale.fade-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger animation delays */
+        .feature-card:nth-child(1) { transition-delay: 0.1s; }
+        .feature-card:nth-child(2) { transition-delay: 0.2s; }
+        .feature-card:nth-child(3) { transition-delay: 0.3s; }
+        .feature-card:nth-child(4) { transition-delay: 0.4s; }
+        .feature-card:nth-child(5) { transition-delay: 0.5s; }
+        .feature-card:nth-child(6) { transition-delay: 0.6s; }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(29, 26, 57, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(243, 159, 90, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #F39F5A;
+        }
+
+        .cta-button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #AE445A, #F39F5A);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(243, 159, 90, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(243, 159, 90, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 80px;
+            position: relative;
+            overflow: hidden;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(29, 26, 57, 0.92) 0%, rgba(69, 25, 82, 0.88) 50%, rgba(102, 37, 73, 0.90) 100%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 50%;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(243, 159, 90, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(243, 159, 90, 0.3);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #E8BCB9, #F39F5A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .primary-btn {
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #AE445A, #F39F5A);
+            border: none;
+            border-radius: 35px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(243, 159, 90, 0.4);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(243, 159, 90, 0.6);
+        }
+
+        .secondary-btn {
+            padding: 18px 45px;
+            background: rgba(232, 188, 185, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(243, 159, 90, 0.4);
+            border-radius: 35px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(243, 159, 90, 0.2);
+            transform: translateY(-3px);
+            border-color: rgba(243, 159, 90, 0.6);
+        }
+
+        /* Floating Image Card with Upload */
+        .floating-card {
+            position: absolute;
+            right: 8%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 30px;
+            overflow: hidden;
+            z-index: 10;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s ease-out;
+            cursor: pointer;
+        }
+
+        .floating-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: rgba(29, 26, 57, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(243, 159, 90, 0.3);
+        }
+
+        .card-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .upload-prompt {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+            background: rgba(29, 26, 57, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .upload-btn {
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #AE445A, #F39F5A);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(243, 159, 90, 0.5);
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 120px 80px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(243, 159, 90, 0.2);
+            border: 1px solid rgba(243, 159, 90, 0.4);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: #F39F5A;
+        }
+
+        .section-header h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: rgba(29, 26, 57, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(243, 159, 90, 0.2);
+            border-radius: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(29, 26, 57, 0.8);
+            border-color: rgba(243, 159, 90, 0.5);
+            box-shadow: 0 20px 50px rgba(174, 68, 90, 0.3);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(174, 68, 90, 0.3), rgba(243, 159, 90, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(243, 159, 90, 0.2);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        /* Parallax Image Section */
+        .parallax-section {
+            height: 60vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 80px 0;
+        }
+
+        .parallax-image {
+            position: absolute;
+            top: -20%;
+            left: 0;
+            width: 100%;
+            height: 140%;
+            background: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1920&q=80') center/cover no-repeat;
+            filter: brightness(0.6);
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 60px;
+            background: rgba(29, 26, 57, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(243, 159, 90, 0.3);
+            max-width: 700px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .parallax-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .parallax-content p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        /* 3D Dishes Gallery Section */
+        .dishes-gallery {
+            padding: 120px 80px;
+            position: relative;
+            background: rgba(29, 26, 57, 0.3);
+        }
+
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dish-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(174, 68, 90, 0.4);
+        }
+
+        .dish-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #f5f5f5;
+        }
+
+        .dish-info {
+            padding: 25px;
+            text-align: center;
+            background: white;
+        }
+
+        .dish-day {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1D1A39;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .dish-meal {
+            font-size: 0.9rem;
+            color: #AE445A;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 968px) {
+            .dishes-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .dishes-gallery {
+                padding: 80px 30px;
+            }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+        }
+
+        .cta-section p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 60px 80px 30px;
+            background: rgba(29, 26, 57, 0.8);
+            border-top: 1px solid rgba(243, 159, 90, 0.2);
+            text-align: center;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 968px) {
+            .navbar {
+                padding: 20px 30px;
+            }
+
+            .hero {
+                padding: 100px 30px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .floating-card {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features,
+            .cta-section {
+                padding: 80px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Parallax Background -->
+    <div class="animated-bg">
+        <div class="parallax-layer" id="bgLayer1">
+            <div class="parallax-shapes">
+                <div class="shape shape1"></div>
+                <div class="shape shape2"></div>
+                <div class="shape shape3"></div>
+            </div>
+        </div>
+    </div>
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <div class="logo">
+    <span>🍽️ Khana Genie</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#food-detection">Food Detection</a></li>
+    <li><a href="#health">Health Analytics</a></li>
+    <li><a href="#recipes">Recipes & Inventory</a></li>
+    <li><a href="#settings">Settings</a></li>
+    <li><a href="#profile">User Profile</a></li>
+  </ul>
+  <button class="cta-button">Get Started</button>
+</nav>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <span class="hero-badge">✨ Smart Meal Planning Made Easy</span>
+            <h1>Plan Your Perfect Meals with Khana Genie</h1>
+            <p>Discover personalized meal plans, save time, and eat healthier. Your AI-powered kitchen companion.</p>
+            <div class="hero-buttons">
+                <button class="primary-btn">Start Free Trial</button>
+                <button class="secondary-btn">Watch Demo</button>
+            </div>
+        </div>
+
+        <div class="floating-card" id="floatingCard">
+            <img id="mealImage" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80" alt="Delicious Meal">
+            <div class="card-overlay">
+                <h3>Today's Special</h3>
+                <p>Healthy Veggie Omelette</p>
+            </div>
+            <div class="upload-prompt" id="uploadPrompt" style="display: none;">
+                <p style="margin-bottom: 15px; font-size: 1.1rem;">Upload Your Meal Photo</p>
+                <label for="imageUpload" class="upload-btn">Choose Image</label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header scroll-animate">
+            <span class="section-badge">🌟 Features</span>
+            <h2>Everything You Need</h2>
+            <p>Powerful features to help you plan, cook, and enjoy amazing meals</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">🤖</div>
+                <h3>AI-Powered</h3>
+                <p>Get personalized meal recommendations based on your preferences and dietary needs.</p>
+            </div>
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">📅</div>
+                <h3>Weekly Plans</h3>
+                <p>Plan your entire week in minutes with customizable meal schedules.</p>
+            </div>
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">🛒</div>
+                <h3>Shopping Lists</h3>
+                <p>Automatically generate grocery lists from your meal plans.</p>
+            </div>
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">💪</div>
+                <h3>Nutrition Tracking</h3>
+                <p>Monitor calories, macros, and nutritional values effortlessly.</p>
+            </div>
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">👨‍🍳</div>
+                <h3>Easy Recipes</h3>
+                <p>Follow step-by-step instructions with photos and videos.</p>
+            </div>
+            <div class="feature-card scroll-animate">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Cuisines</h3>
+                <p>Explore thousands of recipes from around the world.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax Image Section -->
+    <section class="parallax-section">
+        <div class="parallax-image" id="parallaxImg"></div>
+        <div class="parallax-content scroll-animate-scale">
+            <h2>Made for Food Lovers</h2>
+            <p>Join thousands of users who have transformed their meal planning experience</p>
+            <button class="primary-btn">Learn More</button>
+        </div>
+    </section>
+
+    <!-- 3D Dishes Gallery Section -->
+    <section class="dishes-gallery">
+        <div class="section-header scroll-animate">
+            <span class="section-badge">🍽️ Weekly Meal Plan</span>
+            <h2>Your Perfect Week</h2>
+            <p>Delicious Indian vegetarian meals packed with protein and nutrition</p>
+        </div>
+        <div class="dishes-grid">
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=80" alt="Monday Dal">
+                <div class="dish-info">
+                    <div class="dish-day">Monday</div>
+                    <div class="dish-meal">Dal Tadka & Brown Rice</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&q=80" alt="Tuesday Paneer">
+                <div class="dish-info">
+                    <div class="dish-day">Tuesday</div>
+                    <div class="dish-meal">Palak Paneer Bowl</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=600&q=80" alt="Wednesday Chana">
+                <div class="dish-info">
+                    <div class="dish-day">Wednesday</div>
+                    <div class="dish-meal">Chana Masala & Roti</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1589301773859-bb024d3dd67e?w=600&q=80" alt="Thursday Rajma">
+                <div class="dish-info">
+                    <div class="dish-day">Thursday</div>
+                    <div class="dish-meal">Rajma Chawal</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Friday Idli">
+                <div class="dish-info">
+                    <div class="dish-day">Friday</div>
+                    <div class="dish-meal">Idli Sambhar</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1628294895950-9805252327bc?w=600&q=80" alt="Saturday Dosa">
+                <div class="dish-info">
+                    <div class="dish-day">Saturday</div>
+                    <div class="dish-meal">Masala Dosa</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&q=80" alt="Sunday Thali">
+                <div class="dish-info">
+                    <div class="dish-day">Sunday</div>
+                    <div class="dish-meal">Protein Thali</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80" alt="Tofu Curry">
+                <div class="dish-info">
+                    <div class="dish-day">Special</div>
+                    <div class="dish-meal">Tofu Bhurji</div>
+                </div>
+            </div>
+            <div class="dish-card scroll-animate">
+                <img class="dish-image" src="https://images.unsplash.com/photo-1593560704563-f176a2eb61db?w=600&q=80" alt="Moong Dal">
+                <div class="dish-info">
+                    <div class="dish-day">Premium</div>
+                    <div class="dish-meal">Moong Dal Khichdi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="scroll-animate">Ready to Transform Your Meal Planning?</h2>
+        <p class="scroll-animate">Start your free trial today and discover the magic of effortless cooking</p>
+        <button class="primary-btn scroll-animate" style="font-size: 1.2rem; padding: 20px 50px;">Start Your Free Trial</button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Khana Genie. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Enhanced Parallax effect on scroll
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            
+            // Background image parallax
+            const animatedBg = document.querySelector('.animated-bg');
+            if (animatedBg) {
+                animatedBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+
+            // Hero section parallax
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.backgroundPositionY = `${scrolled * 0.5}px`;
+            }
+
+            // Background layer parallax
+            const bgLayer = document.getElementById('bgLayer1');
+            if (bgLayer) {
+                bgLayer.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+
+            // Parallax image section
+            const parallaxImg = document.getElementById('parallaxImg');
+            if (parallaxImg) {
+                const rect = parallaxImg.getBoundingClientRect();
+                const scrollPercent = (window.innerHeight - rect.top) / window.innerHeight;
+                parallaxImg.style.transform = `translateY(${scrollPercent * -100}px) scale(1.1)`;
+            }
+        });
+
+        // Mouse parallax for floating card
+        const floatingCard = document.getElementById('floatingCard');
+        if (floatingCard) {
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = (e.clientX / window.innerWidth - 0.5) * 15;
+                const mouseY = (e.clientY / window.innerHeight - 0.5) * 15;
+                
+                floatingCard.style.transform = `translate(${mouseX}px, calc(-50% + ${mouseY}px))`;
+            });
+
+            // Show upload prompt on click
+            floatingCard.addEventListener('click', function() {
+                const uploadPrompt = document.getElementById('uploadPrompt');
+                uploadPrompt.style.display = uploadPrompt.style.display === 'none' ? 'block' : 'none';
+            });
+        }
+
+        // Image upload functionality
+        const imageUpload = document.getElementById('imageUpload');
+        const mealImage = document.getElementById('mealImage');
+        
+        if (imageUpload && mealImage) {
+            imageUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        mealImage.src = event.target.result;
+                        document.getElementById('uploadPrompt').style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // 3D tilt effect for feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                card.style.transform = '';
+            });
+        });
+
+        // Bootstrap-style scroll animation
+        function checkScroll() {
+            const elements = document.querySelectorAll('.scroll-animate, .scroll-animate-left, .scroll-animate-right, .scroll-animate-scale');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                const windowHeight = window.innerHeight;
+                
+                // Trigger when element is 80% visible in viewport
+                if (elementTop < windowHeight * 0.8 && elementBottom > 0) {
+                    element.classList.add('fade-in');
+                }
+            });
+        }
+
+        // Check on scroll
+        window.addEventListener('scroll', checkScroll);
+        
+        // Check on page load
+        window.addEventListener('load', checkScroll);
+        
+        // Initial check
+        checkScroll();
+    </script>
+</body>
+</html>
