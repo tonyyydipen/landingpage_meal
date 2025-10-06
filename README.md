@@ -67,57 +67,20 @@ Simply upload your food photo — KhanaGenie detects what you’re eating, logs 
 
 ---
 
-## ⚙️ Setup Instructions
+## 📚 Future Scope
+- 🤖 Personalized diet advice using AI  
+- 🩺 Integration with Google Fit / Fitbit  
+- 📦 Barcode scanner for packaged foods  
+- 🗓️ Meal planner with calendar integration  
+- 🗣️ Voice-based food logging  
 
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/<your-username>/KhanaGenie.git
-cd KhanaGenie
-2️⃣ Run Locally
-Open index.html in your browser.
+---
 
-For local backend:
+## 👩‍💻 Contributors
 
-bash
-Copy code
-python app.py
-3️⃣ Add API Keys
-Create a .env file and add:
-
-ini
-Copy code
-CLARIFAI_API_KEY=your_key_here
-EDAMAM_APP_ID=your_id_here
-EDAMAM_APP_KEY=your_key_here
-📚 Future Scope
-🤖 Personalized diet advice using AI
-
-🩺 Integration with Google Fit / Fitbit
-
-📦 Barcode scanner for packaged foods
-
-🗓️ Meal planner with calendar integration
-
-🗣️ Voice-based food logging
-
-👩‍💻 Contributors
-Name	Role / Pages	Key Modules
-Nandini Yedelli	Food Detection / Upload Page
-Food Log Page	- Camera/file upload, API integration (Clarifai/Google Vision)
-- Display detected food + add expense option
-- List of meals, filter by date/meal type
-- Edit/delete entries, expense association
-Samiksha Chavan	Dashboard Page
-Settings & Profile Page	- Central hub with daily summary, streaks, health score
-- User profile management, app settings, dark mode toggle
-Christina Esther Nadar	Health Analytics Page
-Recipes & Fridge Inventory Page	- Weekly/monthly food health analysis
-- Nutritional breakdown charts, motivational insights
-- Ingredient input, API integration (Spoonacular/Edamam)
-- Recipe suggestion cards
-Taniya Renjarla	Landing & Authentication Pages
-Expense Tracking Page	- Home / Landing page (intro, features, signup CTA)
-- Login & Signup pages (user authentication flow)
-- Meals Reminders & Streaks
-- Expense input, categories (groceries/dining/delivery)
-- Charts for daily/weekly/monthly spending
+| Name                     | Role / Pages                                         | Key Modules |
+|--------------------------|-----------------------------------------------------|-------------|
+| **Nandini Yedelli**       | Food Detection / Upload Page <br> Food Log Page     | - Camera/file upload, API integration (Clarifai/Google Vision) <br> - Display detected food + add expense option <br> - List of meals, filter by date/meal type <br> - Edit/delete entries, expense association |
+| **Samiksha Chavan**       | Dashboard Page <br> Settings & Profile Page        | - Central hub with daily summary, streaks, health score <br> - User profile management, app settings, dark mode toggle |
+| **Christina Esther Nadar**| Health Analytics Page <br> Recipes & Fridge Inventory Page | - Weekly/monthly food health analysis <br> - Nutritional breakdown charts, motivational insights <br> - Ingredient input, API integration (Spoonacular/Edamam) <br> - Recipe suggestion cards |
+| **Taniya Renjarla**       | Landing & Authentication Pages <br> Expense Tracking Page | - Home / Landing page (intro, features, signup CTA) <br> - Login & Signup pages (user authentication flow) <br> - Meals Reminders & Streaks <br> - Expense input, categories (groceries/dining/delivery) <br> - Charts for daily/weekly/monthly spending |
