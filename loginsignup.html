@@ -425,7 +425,7 @@
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         alert("🎉 Signup successful! Redirecting...");
-        window.location.href = "food-detection.html";
+        window.location.href = "fooddetection.html";
       } catch (error) {
         let message = error.message;
         if (error.code === 'auth/email-already-in-use') {
@@ -452,7 +452,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         alert("✅ Login successful!");
-        window.location.href = "food-detection.html";
+        window.location.href = "fooddetection.html";
       } catch (error) {
         let message = error.message;
         if (error.code === 'auth/user-not-found') {
@@ -472,7 +472,7 @@
         try {
           const result = await signInWithPopup(auth, provider);
           alert(`Welcome ${result.user.displayName} 🎉`);
-          window.location.href = "food-detection.html";
+          window.location.href = "fooddetection.html";
         } catch (error) {
           alert("⚠️ " + error.message);
         }

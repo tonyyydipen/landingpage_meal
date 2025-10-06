@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Optimizer Dashboard</title>
+    <title>KhanaGenie - Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -55,15 +55,12 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
 
         .dashboard-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .full-width {
-            grid-column: 1 / -1;
         }
 
         @keyframes pulse {
@@ -82,35 +79,6 @@
             50% { transform: translateY(-20px) rotate(10deg); }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        .bounce {
-            animation: bounce 0.5s ease;
-        }
-
-        .floating-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .floating-icon {
-            position: absolute;
-            font-size: 24px;
-            animation: float 6s ease-in-out infinite;
-        }
-
         /* Header Styles */
         .header-card {
             position: relative;
@@ -122,12 +90,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .header-text h1 {
             font-size: 2.5rem;
             color: var(--dark-text);
             margin-bottom: 10px;
+        }
+
+        .header-text p {
+            color: var(--light-text);
+            font-size: 1.1rem;
         }
 
         .streak-badge {
@@ -139,6 +114,13 @@
             align-items: center;
             gap: 8px;
             font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .header-widgets {
+            display: flex;
+            gap: 30px;
+            align-items: center;
         }
 
         .health-score {
@@ -195,6 +177,54 @@
             padding: 8px 12px;
             border-radius: 20px;
             margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 24px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Summary Stats Grid */
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--dark-text);
+            margin: 5px 0;
+        }
+
+        .stat-label {
+            color: var(--light-text);
             font-size: 0.9rem;
         }
 
@@ -296,177 +326,323 @@
             opacity: 0.8;
         }
 
-        /* Weekly & Monthly Highlights */
-        .time-period-tabs {
+        /* Streaks Styles - UPDATED */
+        .streak-header {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .tab {
-            padding: 10px 20px;
+        .streak-header h2 {
+            color: var(--dark-text);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-nav button {
+            background: var(--tiffany-blue);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab.active {
-            border-bottom: 3px solid var(--tiffany-blue);
             font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
-        .highlights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
+        .month-nav button:hover {
+            background: var(--mint);
+            transform: scale(1.05);
         }
 
-        .highlight-card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
+        .month-nav span {
+            font-weight: bold;
+            color: var(--dark-text);
+            min-width: 120px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
         }
 
-        .highlight-icon {
+        .streak-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            gap: 10px;
+        }
+
+        .streak-stat {
+            text-align: center;
+            padding: 12px 8px;
+            background: white;
+            border-radius: 12px;
+            flex: 1;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .streak-stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--hot-pink);
+            line-height: 1.2;
+        }
+
+        .streak-stat-label {
+            color: var(--light-text);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            line-height: 1.2;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin: 15px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            border-color: var(--dark-text);
+        }
+
+        .day-number {
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .day-complete {
+            background: var(--healthy);
+            color: white;
+        }
+
+        .day-partial {
+            background: var(--moderate);
+            color: black;
+        }
+
+        .day-missed {
+            background: var(--unhealthy);
+            color: white;
+        }
+
+        .day-future {
+            background: #f8f8f8;
+            color: var(--light-text);
+            opacity: 0.5;
+        }
+
+        .day-not-logged {
+            background: #ffffff;
+            color: var(--light-text);
+            border: 1px solid #e0e0e0;
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* Food Log Preview */
+        .food-timeline {
+            margin: 20px 0;
+        }
+
+        .food-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .food-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            background: var(--yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 2rem;
-            margin-bottom: 10px;
         }
 
-        /* Expense Arena Styles */
-        .wallet-card {
+        .food-details {
+            flex: 1;
+        }
+
+        .food-name {
+            font-weight: bold;
+            color: var(--dark-text);
+            margin-bottom: 5px;
+        }
+
+        .food-meta {
+            color: var(--light-text);
+            font-size: 0.85rem;
+        }
+
+        .food-nutrition {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .nutrition-item {
+            font-size: 0.8rem;
+            color: var(--light-text);
+        }
+
+        .nutrition-item strong {
+            color: var(--dark-text);
+        }
+
+        .view-more-btn {
+            background: linear-gradient(135deg, var(--mint), var(--tiffany-blue));
+            color: var(--dark-text);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .view-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Expense Overview */
+        .expense-summary {
+            margin: 20px 0;
+        }
+
+        .expense-total {
             background: linear-gradient(135deg, var(--yellow), var(--mint));
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             text-align: center;
-            margin: 15px 0;
-            position: relative;
+            margin-bottom: 20px;
         }
 
-        .wallet-amount {
+        .expense-amount {
             font-size: 2.5rem;
             font-weight: bold;
             color: var(--dark-text);
         }
 
-        .currency {
-            font-size: 1.5rem;
+        .expense-label {
+            font-size: 1.1rem;
+            color: var(--light-text);
+            margin-top: 5px;
         }
 
-        .coins-animation {
-            position: absolute;
-            right: 20px;
-            top: 20px;
-        }
-
-        .coin {
-            display: block;
-            animation: bounce 1s infinite;
-        }
-
-        .donut-chart {
-            margin: 20px 0;
-        }
-
-        .chart-segment {
+        .expense-categories {
             display: flex;
-            align-items: center;
             gap: 10px;
-            margin: 10px 0;
+            margin: 15px 0;
         }
 
-        .segment-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        .category-item {
+            flex: 1;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
         }
 
-        .budget-alert {
-            padding: 12px;
+        .category-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .category-amount {
+            font-weight: bold;
+            color: var(--dark-text);
+        }
+
+        .category-label {
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        .budget-status {
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
             font-weight: bold;
             margin: 15px 0;
         }
 
-        .overspending {
-            background: #ffebee;
-            color: #d32f2f;
-            animation: shake 0.5s;
-        }
-
-        .on-track {
+        .status-on-track {
             background: var(--yellow);
             color: var(--dark-text);
         }
 
-        .budget-bar-container {
-            margin-top: 20px;
-        }
-
-        .bar-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .bar-background {
-            height: 20px;
-            background: #f0f0f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--mint), var(--tiffany-blue));
-            transition: width 0.5s ease;
-        }
-
-        .piggy-bank {
-            text-align: center;
-            font-size: 2rem;
-            margin-top: 10px;
-        }
-
-        /* Streaks & Achievements Styles */
-        .heatmap-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin: 15px 0;
-        }
-
-        .heatmap-day {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .heatmap-day:hover {
-            transform: scale(1.2);
-        }
-
+        /* Achievements Styles */
         .achievements-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
 
         .achievement {
             text-align: center;
-            padding: 15px;
+            padding: 20px 15px;
             border-radius: 15px;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
         }
 
         .achievement.unlocked {
             background: var(--yellow);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .achievement.locked {
@@ -475,13 +651,27 @@
         }
 
         .achievement-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             display: block;
             margin-bottom: 10px;
         }
 
+        .achievement-name {
+            font-weight: bold;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .achievement-date {
+            font-size: 0.75rem;
+            color: var(--light-text);
+            margin-bottom: 10px;
+        }
+
         .achievement-progress {
-            height: 5px;
+            height: 6px;
             background: #e0e0e0;
             border-radius: 5px;
             margin-top: 10px;
@@ -492,36 +682,13 @@
             height: 100%;
             background: var(--healthy);
             border-radius: 5px;
+            transition: width 0.5s ease;
         }
 
-        .level-progress {
-            margin-top: 20px;
-        }
-
-        .level-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .xp-bar {
-            height: 10px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .xp-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--hot-pink), var(--tiffany-blue));
-            border-radius: 5px;
-        }
-
-        .xp-text {
-            text-align: center;
-            font-size: 0.9rem;
-            margin-top: 5px;
+        .progress-text {
+            font-size: 0.75rem;
             color: var(--light-text);
+            margin-top: 5px;
         }
 
         /* Insights & Motivation Styles */
@@ -570,7 +737,48 @@
             font-size: 2rem;
         }
 
-        /* New Layout Styles */
+        /* Nutrition Snapshot */
+        .nutrition-summary {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .chart-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .servings-counter {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .serving-item {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .serving-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .serving-count {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark-text);
+        }
+
+        /* Layout Styles */
         .top-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -579,7 +787,7 @@
 
         .middle-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
@@ -589,32 +797,44 @@
             gap: 20px;
         }
 
-        /* Responsive Design */
+        /* Responsive */
         @media (max-width: 1024px) {
-            .dashboard-main {
-                grid-template-columns: 1fr;
-            }
-            
             .header-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 20px;
             }
-            
-            .insights-grid {
+
+            .summary-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .top-row, .middle-row, .bottom-row {
                 grid-template-columns: 1fr;
             }
-            
+
+            .nutrition-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .expense-categories {
+                flex-direction: column;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+            }
+
             .achievements-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .health-classification {
-                flex-direction: column;
-            }
-            
-            .top-row, .middle-row, .bottom-row {
+
+            .insights-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .streak-stats {
+                flex-direction: column;
+                gap: 8px;
             }
         }
 
@@ -634,30 +854,74 @@
             .chart-container {
                 flex-direction: column;
             }
-            
-            .highlights-grid {
-                grid-template-columns: 1fr;
+
+            .streak-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
             }
+
+            .month-nav {
+                justify-content: center;
+            }
+        }
+
+        h2 {
+            color: var(--dark-text);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .level-progress {
+            margin-top: 15px;
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .xp-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hot-pink), var(--tiffany-blue));
+            border-radius: 4px;
+        }
+
+        .xp-text {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            color: var(--light-text);
         }
     </style>
 </head>
 <body>
     <div class="app">
-        <!-- Header Component -->
+        <!-- Header -->
         <div class="header-card dashboard-card">
             <div class="header-content">
                 <div class="header-text">
-                    <h1>Good Morning, Samiksha 🌞</h1>
+                    <h1>Good Morning, Samiksha! 🌞</h1>
+                    <p id="current-date">Tuesday, October 7, 2025</p>
                     <div class="streak-badge">
-                        <span class="fire">🔥</span>
-                        You're on a 5-day streak!
+                        <span>🔥</span>
+                        <span id="streak-count">12-day streak!</span>
                     </div>
                 </div>
                 
                 <div class="header-widgets">
                     <div class="health-score">
                         <div class="score-circle">
-                            <div class="score-value">7.8/10</div>
+                            <div class="score-value">78</div>
                             <div class="score-label">Health Score</div>
                         </div>
                         <div class="pulse-ring"></div>
@@ -665,7 +929,7 @@
                     
                     <div class="mascot">
                         <div class="avocado">🥑</div>
-                        <div class="mascot-message">Great job today!</div>
+                        <div class="mascot-message">Keep it up! You're amazing!</div>
                     </div>
                 </div>
             </div>
@@ -676,7 +940,31 @@
                 <div class="floating-icon" style="top: 60%; left: 10%; animation-delay: 2s;">🍞</div>
             </div>
         </div>
-        
+
+        <!-- Today's Summary Stats -->
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value">1,450/2,000</div>
+                <div class="stat-label">Calories Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🍽️</div>
+                <div class="stat-value">3/4</div>
+                <div class="stat-label">Meals Logged</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">₹450/₹600</div>
+                <div class="stat-label">Daily Budget</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value">12 Days</div>
+                <div class="stat-label">Current Streak</div>
+            </div>
+        </div>
+
         <div class="dashboard-main">
             <!-- Top Row: Nutrition Zone and Streaks -->
             <div class="top-row">
@@ -760,49 +1048,56 @@
                     </div>
                 </div>
                 
-                <!-- Streaks Component -->
+                <!-- Streaks Component - UPDATED -->
                 <div class="streaks dashboard-card">
-                    <h2>Streaks 🔥</h2>
-                    
-                    <div class="heatmap">
-                        <div class="heatmap-grid">
-                            <!-- Healthy days (green) -->
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 1 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 2 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 3 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 4 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 5 - Healthy"></div>
-                            <!-- Moderate days (yellow) -->
-                            <div class="heatmap-day" style="background-color: var(--moderate)" title="Day 6 - Moderate"></div>
-                            <div class="heatmap-day" style="background-color: var(--moderate)" title="Day 7 - Moderate"></div>
-                            <!-- Unhealthy days (pink) -->
-                            <div class="heatmap-day" style="background-color: var(--unhealthy)" title="Day 8 - Unhealthy"></div>
-                            <!-- Rest of the month -->
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 9 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 10 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 11 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--moderate)" title="Day 12 - Moderate"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 13 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 14 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 15 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 16 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 17 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--moderate)" title="Day 18 - Moderate"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 19 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 20 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--unhealthy)" title="Day 21 - Unhealthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 22 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 23 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 24 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 25 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--moderate)" title="Day 26 - Moderate"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 27 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 28 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 29 - Healthy"></div>
-                            <div class="heatmap-day" style="background-color: var(--healthy)" title="Day 30 - Healthy"></div>
+                    <div class="streak-header">
+                        <h2>🔥 Meal Logging Streaks</h2>
+                        <div class="month-nav">
+                            <button onclick="prevMonth()">← Prev</button>
+                            <span id="current-month">October 2025</span>
+                            <button onclick="nextMonth()">Next →</button>
                         </div>
                     </div>
-                    
+
+                    <!-- Compact Streak Stats -->
+                    <div class="streak-stats">
+                        <div class="streak-stat">
+                            <div class="streak-stat-value">12 🔥</div>
+                            <div class="streak-stat-label">Current Streak</div>
+                        </div>
+                        <div class="streak-stat">
+                            <div class="streak-stat-value">18 Days</div>
+                            <div class="streak-stat-label">Longest Streak</div>
+                        </div>
+                        <div class="streak-stat">
+                            <div class="streak-stat-value">85%</div>
+                            <div class="streak-stat-label">Monthly Consistency</div>
+                        </div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar">
+                        <!-- Calendar will be generated by JavaScript -->
+                    </div>
+
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color day-complete"></div>
+                            <span>Healthy</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color day-partial"></div>
+                            <span>Moderate</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color day-missed"></div>
+                            <span>Junk Food</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color day-not-logged"></div>
+                            <span>Not Logged</span>
+                        </div>
+                    </div>
+
                     <div class="level-progress">
                         <div class="level-info">
                             <span class="level">Level 4</span>
@@ -816,166 +1111,91 @@
                 </div>
             </div>
             
-            <!-- Middle Row: Food Consumption Highlights and Expense Arena -->
+            <!-- Middle Row: Food Log, Expense Overview, and Weekly Insights -->
             <div class="middle-row">
-                <!-- Weekly & Monthly Highlights -->
-                <div class="highlights dashboard-card">
-                    <h2>Food Consumption Highlights 📊</h2>
-                    
-                    <div class="time-period-tabs">
-                        <div class="tab active" data-period="weekly">Weekly</div>
-                        <div class="tab" data-period="monthly">Monthly</div>
-                    </div>
-                    
-                    <div class="highlights-content">
-                        <div class="highlights-grid" id="weekly-highlights">
-                            <div class="highlight-card">
-                                <div class="highlight-icon">🥦</div>
-                                <h3>Veggie Champion</h3>
-                                <p>You ate 28 servings of vegetables this week!</p>
-                            </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">🍎</div>
-                                <h3>Fruit Lover</h3>
-                                <p>15 different fruits consumed</p>
-                            </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">💧</div>
-                                <h3>Hydration Hero</h3>
-                                <p>Met water goal 6 out of 7 days</p>
-                            </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">💰</div>
-                                <h3>Budget Saver</h3>
-                                <p>Saved ₹350 by cooking at home</p>
+                <!-- Food Log Preview -->
+                <div class="dashboard-card">
+                    <h2>📝 Today's Food Log</h2>
+                    <div class="food-timeline">
+                        <div class="food-item">
+                            <div class="food-image">🥞</div>
+                            <div class="food-details">
+                                <div class="food-name">Breakfast: Oats with Berries</div>
+                                <div class="food-meta">Logged at 8:30 AM</div>
+                                <div class="food-nutrition">
+                                    <span class="nutrition-item"><strong>350 cal</strong></span>
+                                    <span class="nutrition-item"><strong>12g</strong> Protein</span>
+                                    <span class="nutrition-item"><strong>55g</strong> Carbs</span>
+                                    <span class="nutrition-item"><strong>8g</strong> Fat</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="highlights-grid" id="monthly-highlights" style="display: none;">
-                            <div class="highlight-card">
-                                <div class="highlight-icon">🏆</div>
-                                <h3>Consistency King</h3>
-                                <p>25 healthy days this month</p>
+                        <div class="food-item">
+                            <div class="food-image">🥗</div>
+                            <div class="food-details">
+                                <div class="food-name">Lunch: Grilled Chicken Salad</div>
+                                <div class="food-meta">Logged at 1:15 PM</div>
+                                <div class="food-nutrition">
+                                    <span class="nutrition-item"><strong>450 cal</strong></span>
+                                    <span class="nutrition-item"><strong>35g</strong> Protein</span>
+                                    <span class="nutrition-item"><strong>25g</strong> Carbs</span>
+                                    <span class="nutrition-item"><strong>18g</strong> Fat</span>
+                                </div>
                             </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">🥑</div>
-                                <h3>Healthy Fat Fan</h3>
-                                <p>Increased healthy fats by 40%</p>
-                            </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">🍽️</div>
-                                <h3>Home Chef</h3>
-                                <p>Cooked 22 meals at home</p>
-                            </div>
-                            <div class="highlight-card">
-                                <div class="highlight-icon">💰</div>
-                                <h3>Super Saver</h3>
-                                <p>Saved ₹1200 this month</p>
+                        </div>
+                        <div class="food-item">
+                            <div class="food-image">🍎</div>
+                            <div class="food-details">
+                                <div class="food-name">Snack: Apple & Almonds</div>
+                                <div class="food-meta">Logged at 4:30 PM</div>
+                                <div class="food-nutrition">
+                                    <span class="nutrition-item"><strong>180 cal</strong></span>
+                                    <span class="nutrition-item"><strong>4g</strong> Protein</span>
+                                    <span class="nutrition-item"><strong>22g</strong> Carbs</span>
+                                    <span class="nutrition-item"><strong>9g</strong> Fat</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <button class="view-more-btn" onclick="window.location.href='foodlogs.html'">
+                        View All Food Logs →
+                    </button>
                 </div>
                 
-                <!-- Expense Arena Component -->
-                <div class="expense-arena dashboard-card">
-                    <h2>Expense Arena 💰</h2>
-                    
-                    <div class="wallet-card">
-                        <div class="wallet-amount">
-                            <span class="currency">₹</span>
-                            1200
+                <!-- Expense Overview -->
+                <div class="dashboard-card">
+                    <h2>💰 Monthly Expense Overview</h2>
+                    <div class="expense-summary">
+                        <div class="expense-total">
+                            <div class="expense-amount">₹3,200 / ₹8,000</div>
+                            <div class="expense-label">This Month's Spending</div>
                         </div>
-                        <div class="wallet-label">This Week's Spending</div>
-                        <div class="coins-animation">
-                            <span class="coin" style="animation-delay: 0s;">🪙</span>
-                            <span class="coin" style="animation-delay: 0.2s;">🪙</span>
-                            <span class="coin" style="animation-delay: 0.4s;">🪙</span>
+                        
+                        <div class="expense-categories">
+                            <div class="category-item">
+                                <div class="category-icon">🛒</div>
+                                <div class="category-amount">₹1,280</div>
+                                <div class="category-label">Groceries (40%)</div>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-icon">🍽️</div>
+                                <div class="category-amount">₹1,120</div>
+                                <div class="category-label">Dining (35%)</div>
+                            </div>
+                            <div class="category-item">
+                                <div class="category-icon">🚚</div>
+                                <div class="category-amount">₹800</div>
+                                <div class="category-label">Delivery (25%)</div>
+                            </div>
+                        </div>
+
+                        <div class="budget-status status-on-track">
+                            ✅ On Track! You're ₹4,800 under budget
                         </div>
                     </div>
-                    
-                    <div class="donut-chart">
-                        <div class="chart-segment">
-                            <div class="segment-color" style="background-color: #b4f8c8"></div>
-                            <span class="segment-label">Groceries: 50%</span>
-                        </div>
-                        <div class="chart-segment">
-                            <div class="segment-color" style="background-color: #ffaebc"></div>
-                            <span class="segment-label">Dining Out: 33%</span>
-                        </div>
-                        <div class="chart-segment">
-                            <div class="segment-color" style="background-color: #a0e7e5"></div>
-                            <span class="segment-label">Delivery: 17%</span>
-                        </div>
-                    </div>
-                    
-                    <div class="budget-alert on-track">
-                        <span class="alert-icon">🎯</span>
-                        Budget on Track!
-                    </div>
-                    
-                    <div class="budget-bar-container">
-                        <div class="bar-labels">
-                            <span>Spent: ₹1200</span>
-                            <span>Budget: ₹1500</span>
-                        </div>
-                        <div class="bar-background">
-                            <div class="bar-fill" style="width: 80%"></div>
-                        </div>
-                        <div class="piggy-bank">🐷</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Bottom Row: Achievements and Weekly Insights -->
-            <div class="bottom-row">
-                <!-- Achievements Component -->
-                <div class="achievements dashboard-card">
-                    <h2>Achievements 🏆</h2>
-                    
-                    <div class="achievements-grid">
-                        <div class="achievement unlocked">
-                            <span class="achievement-icon">🏅</span>
-                            <span class="achievement-name">7-day streak</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="achievement locked">
-                            <span class="achievement-icon">🍵</span>
-                            <span class="achievement-name">No Junk Week</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 30%"></div>
-                            </div>
-                        </div>
-                        <div class="achievement unlocked">
-                            <span class="achievement-icon">💸</span>
-                            <span class="achievement-name">Budget Saver</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div class="achievement unlocked">
-                            <span class="achievement-icon">🥦</span>
-                            <span class="achievement-name">Veggie Lover</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="achievement locked">
-                            <span class="achievement-icon">💧</span>
-                            <span class="achievement-name">Hydration Master</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 60%"></div>
-                            </div>
-                        </div>
-                        <div class="achievement unlocked">
-                            <span class="achievement-icon">🍎</span>
-                            <span class="achievement-name">Fruit Explorer</span>
-                            <div class="achievement-progress">
-                                <div class="achievement-progress-fill" style="width: 100%"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="view-more-btn" onclick="window.location.href='expenses.html'">
+                        View Expense Details →
+                    </button>
                 </div>
                 
                 <!-- Weekly Insights Component -->
@@ -1004,10 +1224,197 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Bottom Row: Achievements and Nutrition Summary -->
+            <div class="bottom-row">
+                <!-- Achievements -->
+                <div class="dashboard-card">
+                    <h2>🏆 Achievements & Milestones</h2>
+                    <div class="achievements-grid">
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🔥</span>
+                            <span class="achievement-name">7-Day Streak Champion</span>
+                            <div class="achievement-date">Unlocked: Dec 28, 2024</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <span class="achievement-icon">🎯</span>
+                            <span class="achievement-name">30-Day Streak Master</span>
+                            <div class="progress-text">12/30 days</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">💰</span>
+                            <span class="achievement-name">Budget Master</span>
+                            <div class="achievement-date">Unlocked: Jan 1, 2025</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">🥗</span>
+                            <span class="achievement-name">Healthy Eater</span>
+                            <div class="achievement-date">Unlocked: Dec 20, 2024</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement locked">
+                            <span class="achievement-icon">🌟</span>
+                            <span class="achievement-name">Variety Explorer</span>
+                            <div class="progress-text">18/25 foods</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="achievement unlocked">
+                            <span class="achievement-icon">💧</span>
+                            <span class="achievement-name">Hydration Hero</span>
+                            <div class="achievement-date">Unlocked: Jan 3, 2025</div>
+                            <div class="achievement-progress">
+                                <div class="achievement-progress-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weekly Nutrition Snapshot -->
+                <div class="dashboard-card">
+                    <h2>📊 Weekly Nutrition Summary</h2>
+                    <div class="nutrition-summary">
+                        <div class="chart-wrapper">
+                            <canvas id="weeklyNutrition"></canvas>
+                        </div>
+                        <div class="servings-counter">
+                            <div class="serving-item">
+                                <div class="serving-info">
+                                    <span style="font-size: 2rem;">🥗</span>
+                                    <span>Vegetables</span>
+                                </div>
+                                <div class="serving-count">18/21</div>
+                            </div>
+                            <div class="serving-item">
+                                <div class="serving-info">
+                                    <span style="font-size: 2rem;">🍎</span>
+                                    <span>Fruits</span>
+                                </div>
+                                <div class="serving-count">14/14</div>
+                            </div>
+                            <div class="serving-item">
+                                <div class="serving-info">
+                                    <span style="font-size: 2rem;">💧</span>
+                                    <span>Hydration</span>
+                                </div>
+                                <div class="serving-count">6/7 days</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="view-more-btn" onclick="window.location.href='analytics.html'">
+                        View Health Analytics →
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // Update date
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+        // Calendar generation
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            
+            document.getElementById('current-month').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            
+            calendar.innerHTML = '';
+            
+            // Add day labels
+            const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayLabels.forEach(label => {
+                const dayLabel = document.createElement('div');
+                dayLabel.style.textAlign = 'center';
+                dayLabel.style.fontWeight = 'bold';
+                dayLabel.style.padding = '5px';
+                dayLabel.textContent = label;
+                calendar.appendChild(dayLabel);
+            });
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                calendar.appendChild(emptyDay);
+            }
+            
+            // Add days with improved color coding
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                
+                const dayNum = document.createElement('div');
+                dayNum.className = 'day-number';
+                dayNum.textContent = day;
+                
+                // Determine day status with improved logic
+                const isToday = (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear());
+                const isFuture = new Date(currentYear, currentMonth, day) > today;
+                
+                if (isFuture) {
+                    dayEl.classList.add('day-future');
+                } else {
+                    // Random distribution for demo purposes
+                    const status = Math.random();
+                    if (status < 0.6) {
+                        dayEl.classList.add('day-complete'); // Healthy - Green
+                    } else if (status < 0.8) {
+                        dayEl.classList.add('day-partial'); // Moderate - Yellow
+                    } else if (status < 0.9) {
+                        dayEl.classList.add('day-missed'); // Junk Food - Red
+                    } else {
+                        dayEl.classList.add('day-not-logged'); // Not Logged - White
+                    }
+                }
+                
+                dayEl.appendChild(dayNum);
+                calendar.appendChild(dayEl);
+            }
+        }
+
+        function prevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar();
+        }
+
+        generateCalendar();
+
         // Initialize charts
         document.addEventListener('DOMContentLoaded', function() {
             // Macronutrients Chart
@@ -1060,22 +1467,41 @@
                     }
                 }
             });
-            
-            // Tab switching for Weekly/Monthly highlights
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Show corresponding content
-                    const period = this.getAttribute('data-period');
-                    document.getElementById('weekly-highlights').style.display = period === 'weekly' ? 'grid' : 'none';
-                    document.getElementById('monthly-highlights').style.display = period === 'monthly' ? 'grid' : 'none';
-                });
+
+            // Weekly Nutrition Chart
+            const ctx = document.getElementById('weeklyNutrition').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Protein (g)',
+                        data: [45, 52, 48, 50, 55, 42, 51],
+                        backgroundColor: '#ffaebc'
+                    }, {
+                        label: 'Carbs (g)',
+                        data: [180, 165, 175, 170, 190, 160, 185],
+                        backgroundColor: '#fbe7c6'
+                    }, {
+                        label: 'Fats (g)',
+                        data: [55, 48, 52, 50, 58, 45, 54],
+                        backgroundColor: '#a0e7e5'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true, beginAtZero: true }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '7-Day Macronutrient Breakdown'
+                        }
+                    }
+                }
             });
         });
     </script>
