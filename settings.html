@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Optimizer App - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --yellow: #fbe7c6;
+            --mint: #b4f8c8;
+            --tiffany: #a0e7e5;
+            --hotpink: #ffaebc;
+            --light-yellow: #fdf3e3;
+            --light-mint: #d9f8e3;
+            --light-tiffany: #d0f2f1;
+            --light-hotpink: #ffd6dd;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-yellow), var(--light-tiffany));
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed var(--light-hotpink);
+        }
+
+        h1, h2, h3 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--light-hotpink);
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--hotpink);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #ff8fa8;
+            box-shadow: 0 4px 12px rgba(255, 174, 188, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--tiffany);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #8ad9d7;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .toggle-container:hover {
+            background: #f0f0f0;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--mint);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        input:checked + .slider.bounce {
+            animation: toggleBounce 0.5s ease;
+        }
+
+        @keyframes toggleBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .theme-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .theme-option:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-option.active {
+            border-color: var(--text-dark);
+        }
+
+        .theme-yellow {
+            background: var(--yellow);
+        }
+
+        .theme-mint {
+            background: var(--mint);
+        }
+
+        .theme-tiffany {
+            background: var(--tiffany);
+        }
+
+        .theme-hotpink {
+            background: var(--hotpink);
+        }
+
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .chip {
+            padding: 10px 18px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .chip:hover {
+            background: #e0e0e0;
+        }
+
+        .chip.active {
+            background: var(--mint);
+            border-color: var(--mint);
+            color: #1a6b3c;
+        }
+
+        .connected {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a6b3c;
+            font-weight: 500;
+        }
+
+        .connected-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--hotpink);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #ff8fa8;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+            }
+            
+            .theme-selector {
+                justify-content: center;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-sliders-h"></i> Food Optimizer - Settings</h1>
+            <a href="profile.html" class="nav-link">
+                <i class="fas fa-user"></i> Go to Profile
+            </a>
+        </div>
+        
+        <!-- App Preferences -->
+        <div class="card">
+            <h2><i class="fas fa-cog"></i> App Preferences</h2>
+            
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span class="toggle-icon">🌙</span>
+                    <span>Dark Mode</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <h3><i class="fas fa-palette"></i> Color Theme</h3>
+            <div class="theme-selector">
+                <div class="theme-option theme-yellow active" data-theme="yellow"></div>
+                <div class="theme-option theme-mint" data-theme="mint"></div>
+                <div class="theme-option theme-tiffany" data-theme="tiffany"></div>
+                <div class="theme-option theme-hotpink" data-theme="hotpink"></div>
+            </div>
+            
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span class="toggle-icon">🍲</span>
+                    <span>Meal Reminders</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="mealToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span class="toggle-icon">💸</span>
+                    <span>Expense Alerts</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="expenseToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span class="toggle-icon">📊</span>
+                    <span>Health Insights</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="healthToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <h3><i class="fas fa-lock"></i> Privacy</h3>
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span>Share Anonymous Data</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="privacyToggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Health & Tracking -->
+        <div class="card">
+            <h2><i class="fas fa-heartbeat"></i> Health & Tracking</h2>
+            
+            <h3><i class="fas fa-utensils"></i> Diet Goals</h3>
+            <div class="chips-container">
+                <div class="chip active">Weight Loss</div>
+                <div class="chip">Balanced</div>
+                <div class="chip">High Protein</div>
+                <div class="chip">Keto</div>
+                <div class="chip">Vegetarian</div>
+            </div>
+            
+            <h3><i class="fas fa-balance-scale"></i> Units</h3>
+            <div class="chips-container">
+                <div class="chip active">kcal</div>
+                <div class="chip">kJ</div>
+            </div>
+            
+            <div class="chips-container">
+                <div class="chip active">₹ (INR)</div>
+                <div class="chip">$ (USD)</div>
+            </div>
+            
+            <div class="chips-container">
+                <div class="chip active">Metric (kg, cm)</div>
+                <div class="chip">Imperial (lb, ft)</div>
+            </div>
+            
+            <h3><i class="fas fa-link"></i> Integrations</h3>
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span>Fitbit</span>
+                    <div class="connected">
+                        <div class="connected-indicator"></div>
+                        <span>Connected</span>
+                    </div>
+                </div>
+                <button class="btn btn-secondary">Manage</button>
+            </div>
+            
+            <div class="toggle-container">
+                <div class="toggle-label">
+                    <span>Google Fit</span>
+                </div>
+                <button class="btn btn-secondary">Connect</button>
+            </div>
+        </div>
+        
+        <!-- App Management -->
+        <div class="card">
+            <h2><i class="fas fa-toolbox"></i> App Management</h2>
+            
+            <h3><i class="fas fa-database"></i> Data Management</h3>
+            <div style="display: flex; gap: 10px; margin: 15px 0;">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-file-export"></i> Export Data
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-broom"></i> Clear Logs
+                </button>
+            </div>
+            
+            <h3><i class="fas fa-credit-card"></i> Subscription</h3>
+            <div class="toggle-container" style="background: linear-gradient(135deg, var(--light-yellow), var(--light-hotpink));">
+                <div class="toggle-label">
+                    <span><strong>Free Plan</strong> - Upgrade to unlock premium features</span>
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-crown"></i> Upgrade
+                </button>
+            </div>
+            
+            <h3><i class="fas fa-info-circle"></i> About & Support</h3>
+            <div style="margin: 15px 0;">
+                <p>Version 2.4.1</p>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-question-circle"></i> FAQ
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-headset"></i> Contact Support
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Food Optimizer App &copy; 2023 | Eat Smart, Live Better</p>
+        </div>
+    </div>
+
+    <script>
+        // Theme switching
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.theme-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                const theme = this.getAttribute('data-theme');
+                let gradient;
+                
+                switch(theme) {
+                    case 'yellow':
+                        gradient = 'linear-gradient(135deg, var(--light-yellow), var(--light-tiffany))';
+                        break;
+                    case 'mint':
+                        gradient = 'linear-gradient(135deg, var(--light-mint), var(--light-tiffany))';
+                        break;
+                    case 'tiffany':
+                        gradient = 'linear-gradient(135deg, var(--light-tiffany), var(--light-hotpink))';
+                        break;
+                    case 'hotpink':
+                        gradient = 'linear-gradient(135deg, var(--light-hotpink), var(--light-yellow))';
+                        break;
+                }
+                
+                document.body.style.background = gradient;
+            });
+        });
+
+        // Toggle animations
+        document.querySelectorAll('.toggle input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const slider = this.nextElementSibling;
+                slider.classList.add('bounce');
+                
+                setTimeout(() => {
+                    slider.classList.remove('bounce');
+                }, 500);
+                
+                if (this.id === 'expenseToggle' && this.checked) {
+                    createCoinAnimation();
+                }
+                
+                if (this.id === 'mealToggle' && this.checked) {
+                    createSparkleAnimation();
+                }
+            });
+        });
+
+        // Chip selection
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                if (this.parentElement.querySelectorAll('.chip').length > 2) {
+                    this.classList.toggle('active');
+                } else {
+                    this.parentElement.querySelectorAll('.chip').forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Coin animation for expense alerts
+        function createCoinAnimation() {
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 10; i++) {
+                const coin = document.createElement('div');
+                coin.innerHTML = '💸';
+                coin.style.position = 'fixed';
+                coin.style.fontSize = '24px';
+                coin.style.left = Math.random() * 100 + 'vw';
+                coin.style.top = '-30px';
+                coin.style.zIndex = '1000';
+                container.appendChild(coin);
+                
+                const animation = coin.animate([
+                    { top: '-30px', transform: 'rotate(0deg)' },
+                    { top: Math.random() * 50 + 50 + 'vh', transform: 'rotate(360deg)' },
+                    { top: '100vh', transform: 'rotate(720deg)' }
+                ], {
+                    duration: 2000 + Math.random() * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                });
+                
+                animation.onfinish = () => {
+                    coin.remove();
+                };
+            }
+        }
+
+        // Sparkle animation for meal reminders
+        function createSparkleAnimation() {
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 15; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.style.position = 'fixed';
+                sparkle.style.fontSize = '20px';
+                sparkle.style.left = Math.random() * 100 + 'vw';
+                sparkle.style.top = Math.random() * 100 + 'vh';
+                sparkle.style.opacity = '0';
+                sparkle.style.zIndex = '1000';
+                container.appendChild(sparkle);
+                
+                const animation = sparkle.animate([
+                    { opacity: 0, transform: 'scale(0.5)' },
+                    { opacity: 1, transform: 'scale(1.2)' },
+                    { opacity: 0, transform: 'scale(0.5)' }
+                ], {
+                    duration: 1000 + Math.random() * 1000,
+                    easing: 'ease-in-out'
+                });
+                
+                animation.onfinish = () => {
+                    sparkle.remove();
+                };
+            }
+        }
